@@ -24,7 +24,7 @@ resource "kubernetes_secret_v1" "repo_secret" {
 
   data = {
     identity = tls_private_key.flux.private_key_pem
-    identity.pub = tls_private_key.flux.public_key_openssh
+    "identity.pub" = tls_private_key.flux.public_key_openssh
     known_hosts = local.known_hosts
   }
 }
