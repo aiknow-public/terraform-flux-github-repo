@@ -75,3 +75,33 @@ resource "random_password" "webhook_secret" {
   length           = 32
   special          = false
 }
+
+//kustomization
+
+resource "kubernetes_manifest" "kustomization" {
+  manifest = yamldecode(<<-EOT
+      apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      metadata:
+        name: ${local.name}
+        namespace: flux-system
+      spec:
+        targetNamespace: ${var.target_namespce}
+        interval: 1m0s
+        path: ./kubernetes/${var.environment}
+        prune: true
+        sourceRef:
+          kind: GitRepository
+          name: ${local.name}
+        dependsOn:
+          - name: infrastructure
+          - name: common
+        postBuild:
+          substituteFrom:
+            - kind: ConfigMap
+              name: common-variables
+            - kind: Secret
+              name: secretvariables
+  EOT
+  )
+}
