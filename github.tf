@@ -55,4 +55,6 @@ data "kubernetes_resource" "receiver" {
     name      = local.name
     namespace = "flux-system"
   }
+
+  depends_on = [kubernetes_manifest.receiver]
 }
