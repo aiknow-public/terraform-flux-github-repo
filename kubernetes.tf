@@ -1,3 +1,5 @@
+//repo
+
 resource "kubernetes_manifest" "repo" {
   manifest = yamldecode(<<-EOT
       apiVersion: source.toolkit.fluxcd.io/v1
@@ -27,4 +29,49 @@ resource "kubernetes_secret_v1" "repo_secret" {
     "identity.pub" = tls_private_key.flux.public_key_openssh
     known_hosts = local.known_hosts
   }
+}
+
+//webhook
+
+resource "kubernetes_manifest" "receiver" {
+  manifest = yamldecode(<<-EOT
+      apiVersion: notification.toolkit.fluxcd.io/v1
+      kind: Receiver
+      metadata:
+        name: ${local.name}
+        namespace: flux-system
+      spec:
+        type: github
+        events:
+          - "ping"
+          - "push"
+        secretRef:
+          name: ${kubernetes_secret_v1.webhook_secret.metadata[0].name}
+        resources:
+          - kind: GitRepository
+            name: ${local.name}
+  EOT
+  )
+
+  wait {
+    fields = {
+      "status.webhookPath" = "*"
+    }
+  }
+}
+
+resource "kubernetes_secret_v1" "webhook_secret" {
+  metadata {
+    name = "${local.name}-webhook-secret"
+    namespace = "flux-system"
+  }
+
+  data = {
+    token = random_password.webhook_secret.result
+  }
+}
+
+resource "random_password" "webhook_secret" {
+  length           = 32
+  special          = false
 }
