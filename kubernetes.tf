@@ -20,14 +20,14 @@ resource "kubernetes_manifest" "repo" {
 
 resource "kubernetes_secret_v1" "repo_secret" {
   metadata {
-    name = local.name
+    name      = local.name
     namespace = "flux-system"
   }
 
   data = {
-    identity = tls_private_key.flux.private_key_pem
+    identity       = tls_private_key.flux.private_key_pem
     "identity.pub" = tls_private_key.flux.public_key_openssh
-    known_hosts = local.known_hosts
+    known_hosts    = local.known_hosts
   }
 }
 
@@ -62,7 +62,7 @@ resource "kubernetes_manifest" "receiver" {
 
 resource "kubernetes_secret_v1" "webhook_secret" {
   metadata {
-    name = "${local.name}-webhook-secret"
+    name      = "${local.name}-webhook-secret"
     namespace = "flux-system"
   }
 
@@ -72,8 +72,8 @@ resource "kubernetes_secret_v1" "webhook_secret" {
 }
 
 resource "random_password" "webhook_secret" {
-  length           = 32
-  special          = false
+  length  = 32
+  special = false
 }
 
 //kustomization

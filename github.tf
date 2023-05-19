@@ -1,7 +1,7 @@
 locals {
-  name = var.repo_name
+  name      = var.repo_name
   repo_name = var.repo_name
-  org_name = "bosch-top98-ai-know"
+  org_name  = "bosch-top98-ai-know"
   # SSH
   known_hosts = "github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg="
 }
@@ -52,7 +52,7 @@ data "kubernetes_resource" "receiver" {
   kind        = "Receiver"
 
   metadata {
-    name = local.name
+    name      = local.name
     namespace = "flux-system"
   }
 }
