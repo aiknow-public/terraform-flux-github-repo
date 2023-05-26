@@ -20,7 +20,7 @@ resource "kubernetes_manifest" "repo" {
 
 resource "kubernetes_secret_v1" "repo_secret" {
   metadata {
-    name      = local.name
+    name      = "${local.name}-repo-secret"
     namespace = "flux-system"
   }
 
