@@ -34,17 +34,17 @@ resource "github_repository_file" "deploy-folder-readme" {
 }
 
 //webhook
-//cannot be created with Github App Auth,so we write the data to Parameter Store
-
-resource "aws_ssm_parameter" "webhook_data" {
-  name        = "/${var.environment}/github-webhook/${var.repo_name}"
-  description = "Data for the Github webhook to be created manually"
-  type        = "SecureString"
-  value       = <<-EOT
-      gitrepo: https://github.com/bosch-top98-ai-know/${var.repo_name}/settings/hooks
-      webhook_url: ${var.webhookURL}${data.kubernetes_resource.receiver.object.status.webhookPath}
-      secret: ${kubernetes_secret_v1.webhook_secret.data.token}
-  EOT
+resource "github_repository_webhook" "foo" {
+  repository = var.repo_name
+  name = "web"
+  configuration {
+    url          = "${var.webhookURL}${data.kubernetes_resource.receiver.object.status.webhookPath}"
+    content_type = "json"
+    secret: kubernetes_secret_v1.webhook_secret.data.token
+    insecure_ssl = false
+  }
+  active = true
+  events = ["push"]
 }
 
 data "kubernetes_resource" "receiver" {
