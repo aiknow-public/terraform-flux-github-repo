@@ -36,11 +36,11 @@ resource "github_repository_file" "deploy-folder-readme" {
 //webhook
 resource "github_repository_webhook" "foo" {
   repository = var.repo_name
-  name = "web"
+  name       = "web"
   configuration {
     url          = "${var.webhookURL}${data.kubernetes_resource.receiver.object.status.webhookPath}"
     content_type = "json"
-    secret: kubernetes_secret_v1.webhook_secret.data.token
+    secret       = kubernetes_secret_v1.webhook_secret.data.token
     insecure_ssl = false
   }
   active = true
