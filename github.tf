@@ -36,7 +36,6 @@ resource "github_repository_file" "deploy-folder-readme" {
 //webhook
 resource "github_repository_webhook" "foo" {
   repository = var.repo_name
-  name       = "web"
   configuration {
     url          = "${var.webhookURL}${data.kubernetes_resource.receiver.object.status.webhookPath}"
     content_type = "json"
