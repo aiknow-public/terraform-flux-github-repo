@@ -7,3 +7,6 @@ variable "target_namespace" {
 variable "access_github" {
   default = true
 }
+variable "org_name" {
+  default = "bosch-top98-ai-know"
+}

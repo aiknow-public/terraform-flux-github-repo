@@ -13,7 +13,7 @@ resource "kubernetes_manifest" "repo" {
           branch: main
         secretRef:
           name: ${kubernetes_secret_v1.repo_secret.metadata[0].name}
-        url: ssh://git@github.com/${local.org_name}/${local.repo_name}
+        url: ssh://git@github.com/${var.org_name}/${local.repo_name}
   EOT
   )
 }
