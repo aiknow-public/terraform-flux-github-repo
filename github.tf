@@ -8,13 +8,13 @@ locals {
 //Deploy key
 
 resource "tls_private_key" "flux" {
-  count = access_github ? 1 : 0
+  count = access_github == true ? 1 : 0
   algorithm   = "ECDSA"
   ecdsa_curve = "P256"
 }
 
 resource "github_repository_deploy_key" "this" {
-  count = access_github ? 1 : 0
+  count = access_github == true ? 1 : 0
   title      = "Flux ${var.environment}"
   repository = local.repo_name
   key        = tls_private_key.flux.public_key_openssh[0]
@@ -24,7 +24,7 @@ resource "github_repository_deploy_key" "this" {
 //Deployment folders
 
 resource "github_repository_file" "deploy-folder-readme" {
-  count = access_github ? 1 : 0
+  count = access_github == true ? 1 : 0
   repository          = local.repo_name
   branch              = "main"
   file                = "kubernetes/${var.environment}/README.md"
@@ -37,7 +37,7 @@ resource "github_repository_file" "deploy-folder-readme" {
 
 //webhook
 resource "github_repository_webhook" "webhook" {
-  count = access_github ? 1 : 0
+  count = access_github == true ? 1 : 0
   repository = var.repo_name
   configuration {
     url          = "${var.webhookURL}${data.kubernetes_resource.receiver.object.status.webhookPath}"
@@ -50,7 +50,7 @@ resource "github_repository_webhook" "webhook" {
 }
 
 data "kubernetes_resource" "receiver" {
-  count = access_github ? 1 : 0
+  count = access_github == true ? 1 : 0
   api_version = "notification.toolkit.fluxcd.io/v1"
   kind        = "Receiver"
 
