@@ -49,7 +49,6 @@ resource "github_repository_webhook" "webhook" {
 }
 
 data "kubernetes_resource" "receiver" {
-  count = var.access_github ? 1 : 0
   api_version = "notification.toolkit.fluxcd.io/v1"
   kind        = "Receiver"
 
