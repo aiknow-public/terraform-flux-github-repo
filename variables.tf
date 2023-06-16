@@ -16,5 +16,5 @@ variable "repo_ref_type" {
   default = "branch"
 }
 variable "repo_ref_value" {
-  default = "master"
+  default = "main"
 }
