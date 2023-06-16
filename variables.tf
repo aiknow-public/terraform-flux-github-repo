@@ -12,3 +12,9 @@ variable "access_github" {
 variable "org_name" {
   default = "bosch-top98-ai-know"
 }
+variable "repo_ref_type" {
+  default = "branch"
+}
+variable "repo_ref_value" {
+  default = "master"
+}

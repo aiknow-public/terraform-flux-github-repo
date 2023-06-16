@@ -10,7 +10,7 @@ resource "kubernetes_manifest" "repo" {
       spec:
         interval: 10m0s
         ref:
-          branch: main
+          ${var.repo_ref_type}: ${var.repo_ref_value}
         secretRef:
           name: ${kubernetes_secret_v1.repo_secret.metadata[0].name}
         url: ssh://git@github.com/${var.org_name}/${local.repo_name}
