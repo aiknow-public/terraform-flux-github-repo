@@ -20,20 +20,6 @@ resource "github_repository_deploy_key" "this" {
   read_only  = "true"
 }
 
-//Deployment folders
-
-resource "github_repository_file" "deploy-folder-readme" {
-  count = var.access_github ? 1 : 0
-  repository          = local.repo_name
-  branch              = "main"
-  file                = "kubernetes/${var.environment}/README.md"
-  content             = "Use this folder for flux deployments to dev"
-  commit_message      = "Managed by Terraform"
-  commit_author       = "Atlantis"
-  commit_email        = "No-Reply@bosch.com"
-  overwrite_on_create = false
-}
-
 //webhook
 resource "github_repository_webhook" "webhook" {
   count = var.access_github ? 1 : 0
