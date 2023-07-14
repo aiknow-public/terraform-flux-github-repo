@@ -1,4 +1,4 @@
-locals = {
+locals {
   targetNamespace = var.target_namespace != null ? "targetNamespace: ${var.target_namespace}" : ""
 }
 //repo
