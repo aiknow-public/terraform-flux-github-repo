@@ -1,5 +1,5 @@
 locals {
-  targetNamespace = var.target_namespace != null ? "targetNamespace: ${var.target_namespace}" : ""
+  target_namespace = var.target_namespace != null ? "targetNamespace: ${var.target_namespace}" : ""
 }
 //repo
 
