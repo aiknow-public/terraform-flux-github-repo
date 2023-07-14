@@ -1,3 +1,6 @@
+locals = {
+  targetNamespace = var.target_namespace != null ? "targetNamespace: ${var.target_namespace}" : ""
+}
 //repo
 
 resource "kubernetes_manifest" "repo" {
@@ -86,7 +89,7 @@ resource "kubernetes_manifest" "kustomization" {
         name: ${local.name}
         namespace: flux-system
       spec:
-        targetNamespace: ${var.target_namespace}
+        ${local.target_namespace}
         interval: 1m0s
         path: ./kubernetes/${var.environment}
         prune: true
